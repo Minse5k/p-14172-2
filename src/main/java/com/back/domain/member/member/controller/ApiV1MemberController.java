@@ -52,4 +52,15 @@ public class ApiV1MemberController {
         );
     }
 
+    @GetMapping("/me")
+    @Transactional(readOnly = true)
+    @Operation(summary = "내 정보")
+    public MemberDto me(
+            @RequestParam int actorId
+    ) {
+        Member member = memberService.findById(actorId).get();
+
+        return new MemberDto(member);
+    }
+
 }

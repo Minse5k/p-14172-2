@@ -27,4 +27,5 @@ public class MemberService {
     public Optional<Member> findById(int id) {
         return memberRepository.findById(id);
     }
+
 }

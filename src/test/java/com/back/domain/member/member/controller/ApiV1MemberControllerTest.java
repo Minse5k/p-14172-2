@@ -56,5 +56,31 @@ public class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.data").isEmpty());
     }
 
+    @Test
+    @DisplayName("회원가입, username 중복")
+    void t2() throws Exception {
+        memberService.join("usernew", "12345678", "무명");
+
+        ResultActions resultActions = mvc
+                .perform(
+                        post("/api/v1/members/join")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                        {
+                                            "username": "usernew",
+                                            "password": "12345678",
+                                            "name": "무명"
+                                        }
+                                        """)
+                )
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(ApiV1MemberController.class))
+                .andExpect(handler().methodName("join"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.resultCode").value("409-1"))
+                .andExpect(jsonPath("$.msg").value("usernew(은)는 이미 사용중인 username 입니다."));
+    }
 
 }

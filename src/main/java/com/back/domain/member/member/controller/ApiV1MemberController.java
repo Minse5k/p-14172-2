@@ -4,6 +4,7 @@ package com.back.domain.member.member.controller;
 import com.back.domain.member.member.dto.MemberDto;
 import com.back.domain.member.member.entity.Member;
 import com.back.domain.member.member.service.MemberService;
+import com.back.global.globalExceptionHandler.GlobalExceptionHandler;
 import com.back.global.rsData.RsData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,6 +41,9 @@ public class ApiV1MemberController {
     public RsData<MemberDto> join(
             @RequestBody @Valid MemberJoinReqBody reqBody
     ){
+        memberService.findByUsername(reqBody.username).ifPresent(m -> {
+            throw new GlobalExceptionHandler.MemberDuplicateUsernameException(reqBody.username);
+        });
         Member member = memberService.join(reqBody.username, reqBody.password, reqBody.name);
 
         return new RsData<>(

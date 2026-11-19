@@ -108,4 +108,41 @@ public class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.name").value(member.getName()))
                 .andExpect(jsonPath("$.password").doesNotExist());
     }
+
+    @Test
+    @DisplayName("내 정보, actorId 없음")
+    void t4() throws Exception {
+
+        ResultActions resultActions = mvc
+                .perform(
+                        get("/api/v1/members/me")
+                )
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(ApiV1MemberController.class))
+                .andExpect(handler().methodName("me"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.resultCode").value("401-1"))
+                .andExpect(jsonPath("$.msg").value("로그인 후 이용해주세요."));
+    }
+
+    @Test
+    @DisplayName("내 정보, 존재하지 않는 actorId")
+    void t5() throws Exception {
+        int id = Integer.MAX_VALUE;
+
+        ResultActions resultActions = mvc
+                .perform(
+                        get("/api/v1/members/me?actorId=" + id)
+                )
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(ApiV1MemberController.class))
+                .andExpect(handler().methodName("me"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.resultCode").value("401-1"))
+                .andExpect(jsonPath("$.msg").value("로그인 후 이용해주세요."));
+    }
 }

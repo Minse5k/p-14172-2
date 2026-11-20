@@ -112,7 +112,7 @@ public class ApiV1PostCommentController {
     ) {
         Post post = postService.findById(postId).get();
 
-        PostComment postComment = postService.writeComment(post, reqBody.content);
+        PostComment postComment = postService.writeComment(null, post, reqBody.content); // TODO 문제6에서 actor로 교체
 
         postService.flush();
 

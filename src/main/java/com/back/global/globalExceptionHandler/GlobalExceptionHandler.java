@@ -34,6 +34,12 @@ public class GlobalExceptionHandler {
         }
     }
 
+    public static class AccessDeniedException extends RuntimeException {
+        public AccessDeniedException() {
+            super("권한이 없습니다.");
+        }
+    }
+
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<RsData<Void>> handle(NoSuchElementException ex) {
@@ -96,6 +102,17 @@ public class GlobalExceptionHandler {
                         "로그인 후 이용해주세요."
                 ),
                 UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<RsData<Void>> handle(AccessDeniedException ex) {
+        return new ResponseEntity<>(
+                new RsData<>(
+                        "403-1",
+                        "권한이 없습니다."
+                ),
+                FORBIDDEN
         );
     }
 

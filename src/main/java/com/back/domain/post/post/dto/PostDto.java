@@ -8,7 +8,7 @@ public record PostDto(
         int id,
         LocalDateTime createDate,
         LocalDateTime modifyDate,
-        Integer authorId,
+        int authorId,
         String authorName,
         String title,
         String content
@@ -18,8 +18,8 @@ public record PostDto(
                 post.getId(),
                 post.getCreateDate(),
                 post.getModifyDate(),
-                post.getAuthor() == null ? null : post.getAuthor().getId(),
-                post.getAuthor() == null ? null : post.getAuthor().getName(),
+                post.getAuthor().getId(),
+                post.getAuthor().getName(),
                 post.getTitle(),
                 post.getContent()
         );

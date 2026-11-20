@@ -58,12 +58,9 @@ public class ApiV1MemberController {
     public MemberDto me(
             @RequestParam(required = false) Integer actorId
     ) {
-        if(actorId == null) throw new UnauthenticatedException();
+        Member actor = memberService.findActor(actorId);
 
-        Member member = memberService.findById(actorId)
-                .orElseThrow(UnauthenticatedException::new);
-
-        return new MemberDto(member);
+        return new MemberDto(actor);
     }
 
 }

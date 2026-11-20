@@ -2,6 +2,7 @@ package com.back.domain.member.member.service;
 
 import com.back.domain.member.member.entity.Member;
 import com.back.domain.member.member.repository.MemberRepository;
+import com.back.global.globalExceptionHandler.GlobalExceptionHandler.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,13 @@ public class MemberService {
 
     public Optional<Member> findById(int id) {
         return memberRepository.findById(id);
+    }
+
+    public Member findActor(Integer actorId) {
+        if (actorId == null) throw new UnauthenticatedException();
+
+        return findById(actorId)
+                .orElseThrow(UnauthenticatedException::new);
     }
 
 }
